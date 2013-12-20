@@ -2,10 +2,9 @@
     require("fpdf.php");
     
     // name of XML file
-    if ($argc != 2) {
-        exit("usage: php fop_app_2_pdf.php file.xml\n");
+    if ($argc != 2 && $argc != 3) {
+        exit("usage: php fop_app_2_pdf.php apps.xml [ResponseID]\n");
     }
-    
     $file = $argv[1];
     
     // open the file
@@ -33,7 +32,13 @@
         }
     }
     
-    foreach($xml as $response) {
+    foreach($xml as $response) {        
+        // only create one PDF if optional ResponseID argument is given
+        if ($argc == 3 && strcmp($response->{"ResponseID"}, $argv[2]) != 0) {
+            continue;
+        }
+        
+        // create a new PDF
         $filename = trim($response->{"Q4.1"}) . " " . trim($response->{"Q4.3"}) . ".pdf";
         $pdf = new PDF();
         
@@ -107,7 +112,7 @@
         // aditional training
         if (!empty($response->{"Q5.3_1"}) || !empty($response->{"Q5.3_2"})) {
             $pdf->SetFont("Arial", "B", 12);
-            $pdf->MultiCell(0, 6, "In which types of trips would you be interested in receiving additional training?", 0, 1);
+            $pdf->MultiCell(140, 6, "In which types of trips would you be interested in receiving additional training?", 0, 1);
             $pdf->SetFont("Arial", "", 12);
             $additional_training = $response->{"Q5.3_1"};
             if (!empty($response->{"Q5.3_1"}) && !empty($response->{"Q5.3_2"})) {
@@ -131,14 +136,12 @@
         $url = $response->{"Q4.11"};
         $url = str_replace("//<![CDATA[", "", $url);
         $url = str_replace("//]]>", "", $url);
-        $type = explode("?", $url); // isolate the file type
-        $type = $type[1];
-        $type = explode("&", $type);
-        $type = $type[0];       
-        $type = substr($type, strrpos($type, ".") + 1);
+        $type = explode("&", $url);
+        $type = $type[2];   
+        $type = substr($type, strrpos($type, "F") + 1);
         $type = strtoupper($type);
-        if (strcmp($type, "JPG") == 0 || strcmp($type, "JPEG") == 0
-            || strcmp($type, "PNG") == 0) {
+        
+        if (strcmp($type, "JPEG") == 0 || strcmp($type, "JPG") == 0 || strcmp($type, "PNG") == 0) {
             $size = getimagesize($url);
             $width = $size[0];
             $height = $size[1];
@@ -153,25 +156,25 @@
         $pdf->SetFont("Arial", "B", 12);
         $pdf->MultiCell(0, 6, "First evaluator:", 0, 1);
         $pdf->SetFont("Arial", "", 12);
-        $pdf->MultiCell(0, 6, trim($response->{"Q8.2_1_TEXT"}), 0, 1);
+        $pdf->MultiCell(0, 6, iconv("UTF-8", "windows-1252//TRANSLIT", trim($response->{"Q8.2_1_TEXT"})), 0, 1);
         $pdf->Ln();        
 
         $pdf->SetFont("Arial", "B", 12);
         $pdf->MultiCell(0, 6, "In what capactiy you know the evaluator:", 0, 1);
         $pdf->SetFont("Arial", "", 12);
-        $pdf->MultiCell(0, 6, trim($response->{"Q8.2_2_TEXT"}), 0, 1);
+        $pdf->MultiCell(0, 6, iconv("UTF-8", "windows-1252//TRANSLIT", trim($response->{"Q8.2_2_TEXT"})), 0, 1);
         $pdf->Ln(); 
 
         $pdf->SetFont("Arial", "B", 12);
         $pdf->MultiCell(0, 6, "Second evaluator:", 0, 1);
         $pdf->SetFont("Arial", "", 12);
-        $pdf->MultiCell(0, 6, trim($response->{"Q8.4_1_TEXT"}), 0, 1);
+        $pdf->MultiCell(0, 6, iconv("UTF-8", "windows-1252//TRANSLIT", trim($response->{"Q8.4_1_TEXT"})), 0, 1);
         $pdf->Ln();        
 
         $pdf->SetFont("Arial", "B", 12);
         $pdf->MultiCell(0, 6, "In what capactiy you know the evaluator:", 0, 1);
         $pdf->SetFont("Arial", "", 12);
-        $pdf->MultiCell(0, 6, trim($response->{"Q8.4_2_TEXT"}), 0, 1);
+        $pdf->MultiCell(0, 6, iconv("UTF-8", "windows-1252//TRANSLIT", trim($response->{"Q8.4_2_TEXT"})), 0, 1);
         $pdf->Ln(); 
 
         // previous experiences
@@ -242,7 +245,7 @@
         $pdf->Ln();
 
         // done!
-        $pdf->Output("../../FOP 14 Applications/" . $filename, "F");
+        $pdf->Output("../../FOP 13-14 Applications/" . $filename, "F");
         echo $filename . " has been created!\n";
     }
 ?>
