@@ -129,6 +129,8 @@
 
         // photo
         $url = $response->{"Q4.11"};
+        $url = str_replace("//<![CDATA[", "", $url);
+        $url = str_replace("//]]>", "", $url);
         $type = explode("?", $url); // isolate the file type
         $type = $type[1];
         $type = explode("&", $type);
@@ -137,11 +139,40 @@
         $type = strtoupper($type);
         if (strcmp($type, "JPG") == 0 || strcmp($type, "JPEG") == 0
             || strcmp($type, "PNG") == 0) {
-            echo $url . "\n";
-            echo $type . "\n";
-            
-            $pdf->Image();
+            $size = getimagesize($url);
+            $width = $size[0];
+            $height = $size[1];
+            if ($width > $height) {
+                $pdf->Image($url, 150, 40, 40, 0, $type);                
+            } else {
+                $pdf->Image($url, 160, 40, 30, 0, $type);            
+            }
         }
+        
+        // evaluators
+        $pdf->SetFont("Arial", "B", 12);
+        $pdf->MultiCell(0, 6, "First evaluator:", 0, 1);
+        $pdf->SetFont("Arial", "", 12);
+        $pdf->MultiCell(0, 6, trim($response->{"Q8.2_1_TEXT"}), 0, 1);
+        $pdf->Ln();        
+
+        $pdf->SetFont("Arial", "B", 12);
+        $pdf->MultiCell(0, 6, "In what capactiy you know the evaluator:", 0, 1);
+        $pdf->SetFont("Arial", "", 12);
+        $pdf->MultiCell(0, 6, trim($response->{"Q8.2_2_TEXT"}), 0, 1);
+        $pdf->Ln(); 
+
+        $pdf->SetFont("Arial", "B", 12);
+        $pdf->MultiCell(0, 6, "Second evaluator:", 0, 1);
+        $pdf->SetFont("Arial", "", 12);
+        $pdf->MultiCell(0, 6, trim($response->{"Q8.4_1_TEXT"}), 0, 1);
+        $pdf->Ln();        
+
+        $pdf->SetFont("Arial", "B", 12);
+        $pdf->MultiCell(0, 6, "In what capactiy you know the evaluator:", 0, 1);
+        $pdf->SetFont("Arial", "", 12);
+        $pdf->MultiCell(0, 6, trim($response->{"Q8.4_2_TEXT"}), 0, 1);
+        $pdf->Ln(); 
 
         // previous experiences
         $pdf->AddPage();
@@ -193,24 +224,25 @@
         $pdf->SetFont("Arial", "B", 12);
         $pdf->MultiCell(0, 6, "Challenges:", 0, 1);
         $pdf->SetFont("Arial", "", 12);
-        $pdf->MultiCell(0, 6, iconv("UTF-8", "windows-1252//TRANSLIT", $response->{"Q7.2"}), 0, 1);
+        $pdf->MultiCell(0, 6, iconv("UTF-8", "windows-1252//TRANSLIT", $response->{"Q7.3"}), 0, 1);
         $pdf->Ln();
 
         // difficult decision
         $pdf->SetFont("Arial", "B", 12);
         $pdf->MultiCell(0, 6, "Describe a situation in which you made a difficult decision:", 0, 1);
         $pdf->SetFont("Arial", "", 12);
-        $pdf->MultiCell(0, 6, iconv("UTF-8", "windows-1252//TRANSLIT", $response->{"Q7.2"}), 0, 1);
+        $pdf->MultiCell(0, 6, iconv("UTF-8", "windows-1252//TRANSLIT", $response->{"Q7.4"}), 0, 1);
         $pdf->Ln();
 
         // scenario response
         $pdf->SetFont("Arial", "B", 12);
         $pdf->MultiCell(0, 6, "Scenario response:", 0, 1);
         $pdf->SetFont("Arial", "", 12);
-        $pdf->MultiCell(0, 6, iconv("UTF-8", "windows-1252//TRANSLIT", $response->{"Q7.2"}), 0, 1);
+        $pdf->MultiCell(0, 6, iconv("UTF-8", "windows-1252//TRANSLIT", $response->{"Q7.5"}), 0, 1);
         $pdf->Ln();
 
         // done!
         $pdf->Output("../../FOP 14 Applications/" . $filename, "F");
+        echo $filename . " has been created!\n";
     }
 ?>
