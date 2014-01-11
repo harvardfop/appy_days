@@ -245,7 +245,7 @@
         $pdf->Ln();
 
         // done!
-        $pdf->Output("../../FOP 13-14 Applications/" . $filename, "F");
+        $pdf->Output($filename, "F");
         echo $filename . " has been created!\n";
     }
 ?>
