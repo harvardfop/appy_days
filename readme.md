@@ -11,6 +11,6 @@ To turn your Qualtrics form data into boatloads of FOP Leader Application PDFs, 
 - Make any necessary edits to the `template.php` file.
 - Open the "Terminal" application on your Mac.
 - Type `cd Desktop/fop_app_2_pdf/` then hit Enter.
-- Create the PDFs by typing `php fop_app_2_pdf.php apps.xml [ResponseID]` where "apps.xml" is the name of the XML file you've moved to the folder and ResponseID is an optional argument (if you only want to create one PDF). Don't forget to hit Enter!
+- Create the PDFs by typing `php fop_app_2_pdf.php apps.xml [ResponseID]` where `apps.xml` is the name of the XML file you've moved to the folder and `ResponseID` is an optional argument (if you only want to create one PDF). Don't forget to hit Enter!
 
 Enjoy!
