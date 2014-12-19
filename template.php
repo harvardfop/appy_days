@@ -1,19 +1,24 @@
 <?php
 	/*
-	 * For the PDF's header, enter your year.
+	 * For all PDFs' headers, enter your year.
 	 * Suggested format: "2013-14"
 	 */
 	$year = "2013-14";
 	
 	/*
-	 * For the PDF's filename, enter the question ID numbers
+	 * For the application PDFs' filenames, enter the question ID numbers
 	 * of the "First Name" and "Last Name" questions.
 	 * Enter two and only two strings.
+	 *
+	 * For the evaluation PDFs' filenames, enter the question ID numbers
+	 * of the APPLICANT'S "First Name" and "Last Name" questions.
+	 * Enter two and only two strings.
 	 */
-	$names = ["Q4.1", "Q4.3"]; 
+	$apps_names = ["Q4.1", "Q4.3"];
+	$evals_names = ["Q2.2_1_TEXT", "Q2.2_2_TEXT"];
 
 	/*
-	 * To add the photo to the PDF, enter the question ID number
+	 * To add photos to the application PDFs, enter the question ID number
 	 * of the "Photo" question.
 	 * Format: "Q4.11"
 	 * Ignore the "_FILE_ID", etc. parts of the string.
@@ -21,7 +26,7 @@
 	$photo = "Q4.11";
 
 	/*
-	 * Use the array below to lay out the PDF. Notes:
+	 * Use the array below to lay out the application PDFs. Notes:
 	 * - The first level of the array is for the section headers,
 	 *   each of which will start a new page.
 	 * - The "key" is the question text that will appear on the PDF.
@@ -30,7 +35,7 @@
 	 *   question ID numbers in an array.
 	 * - Don't forget commas at the end of rows! (But no comma for the last row!)
 	 */
-	$template = [
+	$apps_template = [
 		"Background Information" => [
 			"First Name" => "Q4.1",
 			"Nickname" => "Q4.2",
@@ -57,6 +62,19 @@
 			"Challenges" => "Q7.3",
 			"Describe a situation in which you made a difficult decision." => "Q7.4",
 			"Scenario Response" => "Q7.5"
+		]
+	];
+
+	/*
+	 * Use the array below to lay out the evaluation PDFs.
+	 * Same notes as above apply.
+	 */
+	$evals_template = [
+		"Background Information" => [
+			"Applicant First Name" => "Q2.2_1_TEXT",
+			"Applicant Last Name" => "Q2.2_2_TEXT",
+			"Evaluator First Name" => "Q2.1_1_TEXT",
+			"Evaluator Last Name" => "Q2.1_2_TEXT",
 		]
 	];
 ?>

@@ -1,12 +1,26 @@
 <?php
     require("includes/fpdf.php");
-    require("app_template.php");
+    require("template.php");
     
-    // name of the XML file
-    if ($argc != 2 && $argc != 3) {
-        exit("usage: php app_2_pdf.php apps.xml [ResponseID]\n");
+    // take command line arguments
+    if ($argc != 3 && $argc != 4) {
+        exit("usage: php xml_2_pdf.php (apps/evals) (responses.xml) [ResponseID]\n");
     }
-    $file = $argv[1];
+
+    // whether these are applications or evaluations
+    $version = $argv[1];
+    if (strcmp($version, "apps") != 0 && strcmp($version, "evals") != 0) {
+        exit("usage: php xml_2_pdf.php (apps/evals) (responses.xml) [ResponseID]\n");
+    } else  if (strcmp($version, "apps") == 0) {
+        $template = $apps_template;
+        $names = $apps_names;
+    } else {
+        $template = $evals_template;
+        $names = $evals_names;
+    }
+
+    // name of the XML file
+    $file = $argv[2];
     
     // open the file
     if (file_exists($file))
@@ -36,12 +50,16 @@
     // make the application PDFs
     foreach($xml as $response) {        
         // only create one PDF if optional ResponseID argument is given
-        if ($argc == 3 && strcmp($response->{"ResponseID"}, $argv[2]) != 0) {
+        if ($argc == 4 && strcmp($response->{"ResponseID"}, $argv[3]) != 0) {
             continue;
         }
         
         // create a new PDF
-        $filename = trim($response->{$names[0]}) . " " . trim($response->{$names[1]}) . ".pdf";
+        $filename = trim($response->{$names[0]}) . " " . trim($response->{$names[1]});
+        if (strcmp($version, "evals") == 0) {
+            $filename .= " (Eval)";
+        }
+        $filename .= ".pdf";
         $pdf = new PDF();
         $start = true;
         
@@ -55,8 +73,8 @@
             $pdf->SetTextColor(0, 0, 0);
             $pdf->Ln();
 
-            // print the photo once
-            if($start) {
+            // print the photo once for applications only
+            if ($start && strcmp($version, "apps") == 0) {
                 $url = $response->{$photo . "_FILE_ID"};
                 $url = str_replace("s.qualtrics", "az1.qualtrics", $url);
                 $type = explode("/", $response->{$photo . "_FILE_TYPE"})[1];
@@ -103,7 +121,7 @@
         }
 
         // all done!
-        $pdf->Output("apps/" . $filename, "F");
+        $pdf->Output($version . "/" . $filename, "F");
         echo $filename . " has been created!\n";
     }
 ?>
