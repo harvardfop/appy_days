@@ -77,7 +77,7 @@
 			"Applicant First Name" => "Q2.2_1_TEXT",
 			"Applicant Last Name" => "Q2.2_2_TEXT",
 			"Evaluator First Name" => "Q2.1_1_TEXT",
-			"Evaluator Last Name" => "Q2.1_2_TEXT",
+			"Evaluator Last Name" => "Q2.1_2_TEXT"
 		]
 	];
 ?>
