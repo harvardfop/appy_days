@@ -57,7 +57,8 @@
         // create a new PDF
         $filename = trim($response->{$names[0]}) . " " . trim($response->{$names[1]});
         if (strcmp($version, "evals") == 0) {
-            $filename .= " (Eval)";
+            $filename .= " (Eval by " . preg_replace("/[^a-z\d ]/i", "", trim($response->{$names[2]}))
+                        . " " . preg_replace("/[^a-z\d ]/i", "", trim($response->{$names[3]})) . ")";
         }
         $filename .= ".pdf";
         $pdf = new PDF();

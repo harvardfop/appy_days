@@ -6,19 +6,22 @@
 	$year = "2013-14";
 	
 	/*
-	 * For the application PDFs' filenames, enter the question ID numbers
+	 * For the application PDFs' filenames, enter the ID numbers
 	 * of the "First Name" and "Last Name" questions.
 	 * Enter two and only two strings.
 	 *
-	 * For the evaluation PDFs' filenames, enter the question ID numbers
-	 * of the APPLICANT'S "First Name" and "Last Name" questions.
-	 * Enter two and only two strings.
+	 * For the evaluation PDFs' filenames, enter the ID numbers
+	 * of the APPLICANT'S "First Name" and "Last Name" questions AND
+	 * then the ID number of the EVALUATOR's "First Name" and
+	 * "Last Name" questions.
+	 * Enter four and only four strings.
 	 */
 	$apps_names = ["Q4.1", "Q4.3"];
-	$evals_names = ["Q2.2_1_TEXT", "Q2.2_2_TEXT"];
+	$evals_names = ["Q8.2_1_TEXT", "Q8.2_2_TEXT", // applicant
+					"Q8.4_1_TEXT", "Q8.4_2_TEXT"]; // evaluator
 
 	/*
-	 * To add photos to the application PDFs, enter the question ID number
+	 * To add photos to the application PDFs, enter the ID number
 	 * of the "Photo" question.
 	 * Format: "Q4.11"
 	 * Ignore the "_FILE_ID", etc. parts of the string.
