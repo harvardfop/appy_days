@@ -9,7 +9,7 @@ To turn your Qualtrics form data into boatloads of FOP Leader Application and Ev
 - Select the appropriate survey.
 - Under the "Data Representation" option, select "Choice Text". Under the "File Format" option, select "XML". No need to "Compress Data to .zip" unless you're into that kind of thing. Click the giant "Download XML Data" button.
 - Unzip the file (if necessary), and then drag it into the `appy_days` folder on your Desktop.
-	- You can download the `appy_days` days folder (and associated code) from its [GitHub repository][https://github.com/harvardfop/appy_days].
+	- You can download the `appy_days` days folder (and associated code) from its [GitHub repository](https://github.com/harvardfop/appy_days).
 	- When you download it from the cloud, make sure to change the name of the folder to `appy_days` and place it on your Desktop.
 - Make any necessary edits to the `template.php` file.
 	- To format both the application and evaluation PDFs.
